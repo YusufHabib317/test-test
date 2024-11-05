@@ -70,7 +70,7 @@ export default function VerifyEmailPage() {
   };
 
   return (
-    <Suspense fallback={<div />}>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="container my-10">
         <Card shadow="md" className="p-6 md:p-5 mt-5 mx-auto max-w-[500px]" radius="md">
           <p className="text-gray-200 text-center my-10 text-2xl">

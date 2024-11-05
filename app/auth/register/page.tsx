@@ -71,7 +71,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <Suspense fallback={<div />}>
+    <Suspense fallback={<div>Loading...</div>}>
       <LoadingWrapper>
         <div className="container overflow-hidden">
           <AuthCard type="register" title="Welcome!" subTitle="You have an account? Log in now!">

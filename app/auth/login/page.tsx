@@ -71,7 +71,7 @@ export default function LoginPage() {
   };
 
   return (
-    <Suspense fallback={<div />}>
+    <Suspense fallback={<div>Loading...</div>}>
       <LoadingWrapper>
         <div className="container">
           <AuthCard type="login" title="Welcome back!" subTitle="Do not have an account ?">

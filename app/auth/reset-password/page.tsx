@@ -178,7 +178,7 @@ export default function ForgetPassword() {
   }
 
   return (
-    <Suspense fallback={<div />}>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="container">
         <Card shadow="md" className="p-6 md:p-10 mt-10 mx-auto max-w-[650px]" radius="md">
           <CardHeader className="flex flex-col">
