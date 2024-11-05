@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 
 import { z } from 'zod';
 
@@ -71,78 +71,80 @@ export default function LoginPage() {
   };
 
   return (
-    <LoadingWrapper>
-      <div className="container">
-        <AuthCard type="login" title="Welcome back!" subTitle="Do not have an account ?">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-              <Controller
-                name="email"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    type="email"
-                    label="Email"
-                    labelPlacement="outside"
-                    disabled={isLoading}
-                    required
-                    errorMessage={errors.email?.message}
-                    placeholder="Enter Your Email"
-                    startContent={
-                      <IconMailFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+    <Suspense fallback={<div />}>
+      <LoadingWrapper>
+        <div className="container">
+          <AuthCard type="login" title="Welcome back!" subTitle="Do not have an account ?">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div>
+                <Controller
+                  name="email"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      type="email"
+                      label="Email"
+                      labelPlacement="outside"
+                      disabled={isLoading}
+                      required
+                      errorMessage={errors.email?.message}
+                      placeholder="Enter Your Email"
+                      startContent={
+                        <IconMailFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
           }
-                  />
-                )}
-              />
-              {errors.email && <div className="text-red-500 ml-2 text-xs">{errors.email?.message}</div>}
-            </div>
-            <div className="mt-10">
-              <Controller
-                name="password"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    label="Password"
-                    labelPlacement="outside"
-                    disabled={isLoading}
-                    required
-                    errorMessage={errors.password?.message}
-                    placeholder="Enter Your Password"
-                    startContent={
-                      <IconLockFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                    />
+                  )}
+                />
+                {errors.email && <div className="text-red-500 ml-2 text-xs">{errors.email?.message}</div>}
+              </div>
+              <div className="mt-10">
+                <Controller
+                  name="password"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      label="Password"
+                      labelPlacement="outside"
+                      disabled={isLoading}
+                      required
+                      errorMessage={errors.password?.message}
+                      placeholder="Enter Your Password"
+                      startContent={
+                        <IconLockFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
             }
-                    endContent={(
-                      <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
-                        {isVisible ? (
-                          <IconEyeOff className="text-2xl text-default-400 pointer-events-none" />
-                        ) : (
-                          <IconEye className="text-2xl text-default-400 pointer-events-none" />
-                        )}
-                      </button>
+                      endContent={(
+                        <Button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
+                          {isVisible ? (
+                            <IconEyeOff className="text-2xl text-default-400 pointer-events-none" />
+                          ) : (
+                            <IconEye className="text-2xl text-default-400 pointer-events-none" />
+                          )}
+                        </Button>
       )}
-                    type={isVisible ? 'text' : 'password'}
-                  />
-                )}
-              />
-              {errors.password && <div className="text-red-500 ml-2 text-xs">{errors.password?.message}</div>}
-            </div>
+                      type={isVisible ? 'text' : 'password'}
+                    />
+                  )}
+                />
+                {errors.password && <div className="text-red-500 ml-2 text-xs">{errors.password?.message}</div>}
+              </div>
 
-            <Link href="/auth/reset-password" className="text-xs md:text-xl mt-5 ml-2">
-              Forgot password?
-            </Link>
-            <div className=" flex justify-center items-center w-60 mx-auto">
-              <Button className="mt-5 " variant="bordered" color="primary" type="submit" isLoading={isLoading}>
-                Sign in
-              </Button>
-            </div>
-          </form>
-        </AuthCard>
-      </div>
-      <div className="absolute top-4 right-4">
-        <ThemeSwitch />
-      </div>
-    </LoadingWrapper>
+              <Link href="/auth/reset-password" className="text-xs md:text-xl mt-5 ml-2">
+                Forgot password?
+              </Link>
+              <div className=" flex justify-center items-center w-60 mx-auto">
+                <Button className="mt-5 " variant="bordered" color="primary" type="submit" isLoading={isLoading}>
+                  Sign in
+                </Button>
+              </div>
+            </form>
+          </AuthCard>
+        </div>
+        <div className="absolute top-4 right-4">
+          <ThemeSwitch />
+        </div>
+      </LoadingWrapper>
+    </Suspense>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { emailOtp, signUp } from '@/lib/auth-client';
 import { registerSchema } from '@/schema/auth';
 import { useForm, Controller } from 'react-hook-form';
@@ -71,128 +71,130 @@ export default function RegisterPage() {
   };
 
   return (
-    <LoadingWrapper>
-      <div className="container overflow-hidden">
-        <AuthCard type="register" title="Welcome!" subTitle="You have an account? Log in now!">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-              <Controller
-                name="name"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    type="text"
-                    label="Name"
-                    disabled={isLoading}
-                    labelPlacement="outside"
-                    required
-                    errorMessage={errors.name?.message}
-                    placeholder="Enter Your Name"
-                    startContent={
-                      <IconUserFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+    <Suspense fallback={<div />}>
+      <LoadingWrapper>
+        <div className="container overflow-hidden">
+          <AuthCard type="register" title="Welcome!" subTitle="You have an account? Log in now!">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div>
+                <Controller
+                  name="name"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      type="text"
+                      label="Name"
+                      disabled={isLoading}
+                      labelPlacement="outside"
+                      required
+                      errorMessage={errors.name?.message}
+                      placeholder="Enter Your Name"
+                      startContent={
+                        <IconUserFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
             }
-                  />
-                )}
-              />
-              {errors.name && <div className="text-red-500 ml-2 text-xs">{errors.name?.message}</div>}
-            </div>
-            <div className="mt-10">
-              <Controller
-                name="email"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    type="text"
-                    label="Email"
-                    disabled={isLoading}
-                    required
-                    labelPlacement="outside"
-                    errorMessage={errors.email?.message}
-                    placeholder="Enter Your Email"
-                    startContent={
-                      <IconMailFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                    />
+                  )}
+                />
+                {errors.name && <div className="text-red-500 ml-2 text-xs">{errors.name?.message}</div>}
+              </div>
+              <div className="mt-10">
+                <Controller
+                  name="email"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      type="text"
+                      label="Email"
+                      disabled={isLoading}
+                      required
+                      labelPlacement="outside"
+                      errorMessage={errors.email?.message}
+                      placeholder="Enter Your Email"
+                      startContent={
+                        <IconMailFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
           }
-                  />
-                )}
-              />
-              {errors.email && <div className="text-red-500 ml-2 text-xs">{errors.email?.message}</div>}
-            </div>
-            <div className="mt-10">
-              <Controller
-                name="password"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    disabled={isLoading}
-                    required
-                    label="Password"
-                    labelPlacement="outside"
-                    errorMessage={errors.password?.message}
-                    placeholder="Enter Your Password"
-                    endContent={(
-                      <button className="focus:outline-none" type="button" onClick={togglePasswordVisibility} aria-label="toggle password visibility">
-                        {isPasswordVisible ? (
-                          <IconEyeOff className="text-2xl text-default-400 pointer-events-none" />
-                        ) : (
-                          <IconEye className="text-2xl text-default-400 pointer-events-none" />
-                        )}
-                      </button>
+                    />
                   )}
-                    startContent={
-                      <IconLockFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-            }
-                    type={isPasswordVisible ? 'text' : 'password'}
-                  />
-                )}
-              />
-              {errors.password && <div className="text-red-500 ml-2 text-xs">{errors.password?.message}</div>}
-            </div>
-            <div className="mt-10">
-              <Controller
-                name="confirmPassword"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    label="Confirm Password"
-                    disabled={isLoading}
-                    required
-                    labelPlacement="outside"
-                    errorMessage={errors.confirmPassword?.message}
-                    placeholder="Enter Confirm Password"
-                    endContent={(
-                      <button className="focus:outline-none" type="button" onClick={toggleConfirmPasswordVisibility} aria-label="toggle confirm password visibility">
-                        {isConfirmPasswordVisible ? (
-                          <IconEyeOff className="text-2xl text-default-400 pointer-events-none" />
-                        ) : (
-                          <IconEye className="text-2xl text-default-400 pointer-events-none" />
-                        )}
-                      </button>
+                />
+                {errors.email && <div className="text-red-500 ml-2 text-xs">{errors.email?.message}</div>}
+              </div>
+              <div className="mt-10">
+                <Controller
+                  name="password"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      disabled={isLoading}
+                      required
+                      label="Password"
+                      labelPlacement="outside"
+                      errorMessage={errors.password?.message}
+                      placeholder="Enter Your Password"
+                      endContent={(
+                        <Button className="focus:outline-none" type="button" onClick={togglePasswordVisibility} aria-label="toggle password visibility">
+                          {isPasswordVisible ? (
+                            <IconEyeOff className="text-2xl text-default-400 pointer-events-none" />
+                          ) : (
+                            <IconEye className="text-2xl text-default-400 pointer-events-none" />
+                          )}
+                        </Button>
                   )}
-                    type={isConfirmPasswordVisible ? 'text' : 'password'}
-                    startContent={
-                      <IconLockFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                      startContent={
+                        <IconLockFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
             }
-                  />
-                )}
-              />
-              {errors.confirmPassword && <div className="text-red-500 ml-2 text-xs">{errors.confirmPassword?.message}</div>}
-            </div>
+                      type={isPasswordVisible ? 'text' : 'password'}
+                    />
+                  )}
+                />
+                {errors.password && <div className="text-red-500 ml-2 text-xs">{errors.password?.message}</div>}
+              </div>
+              <div className="mt-10">
+                <Controller
+                  name="confirmPassword"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      label="Confirm Password"
+                      disabled={isLoading}
+                      required
+                      labelPlacement="outside"
+                      errorMessage={errors.confirmPassword?.message}
+                      placeholder="Enter Confirm Password"
+                      endContent={(
+                        <button className="focus:outline-none" type="button" onClick={toggleConfirmPasswordVisibility} aria-label="toggle confirm password visibility">
+                          {isConfirmPasswordVisible ? (
+                            <IconEyeOff className="text-2xl text-default-400 pointer-events-none" />
+                          ) : (
+                            <IconEye className="text-2xl text-default-400 pointer-events-none" />
+                          )}
+                        </button>
+                  )}
+                      type={isConfirmPasswordVisible ? 'text' : 'password'}
+                      startContent={
+                        <IconLockFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+            }
+                    />
+                  )}
+                />
+                {errors.confirmPassword && <div className="text-red-500 ml-2 text-xs">{errors.confirmPassword?.message}</div>}
+              </div>
 
-            <div className="flex justify-center items-center w-60 mx-auto">
-              <Button className="mt-5" variant="bordered" color="primary" type="submit" isLoading={isLoading}>
-                Register
-              </Button>
-            </div>
-          </form>
-        </AuthCard>
-      </div>
-      <div className="absolute top-4 right-4">
-        <ThemeSwitch />
-      </div>
-    </LoadingWrapper>
+              <div className="flex justify-center items-center w-60 mx-auto">
+                <Button className="mt-5" variant="bordered" color="primary" type="submit" isLoading={isLoading}>
+                  Register
+                </Button>
+              </div>
+            </form>
+          </AuthCard>
+        </div>
+        <div className="absolute top-4 right-4">
+          <ThemeSwitch />
+        </div>
+      </LoadingWrapper>
+    </Suspense>
   );
 }

@@ -3,7 +3,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import {
   IconArrowLeft, IconExternalLink, IconLockFilled, IconMailFilled,
 } from '@tabler/icons-react';
@@ -103,130 +103,136 @@ export default function ForgetPassword() {
 
   if (tokenQuery && tokenQuery.length !== 0) {
     return (
+      <Suspense fallback={<div />}>
+        <div className="container">
+          <Card shadow="md" className="p-6 md:p-10 mt-10 mx-auto max-w-[650px]" radius="md">
+            <CardHeader className="flex flex-col">
+              <h2 className="text-center text-2xl md:text-4xl">Reset Your Password</h2>
+              <h2 className="text-gray-500 text-center mt-3 text-xs md:text-xl">
+                Please enter your new password below.
+              </h2>
+            </CardHeader>
+            <form onSubmit={formResetNewPassword(onSubmitSetNewPassword)}>
+              <div>
+                <Controller
+                  name="newPassword"
+                  control={controlNewPassword}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      type="password"
+                      label="New Password"
+                      disabled={isLoadingSetNewPassword}
+                      required
+                      errorMessage={errorsNewPassword.newPassword?.message}
+                      placeholder="Enter Your New Password"
+                      startContent={
+                        <IconLockFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+            }
+                    />
+                  )}
+                />
+                {errorsNewPassword.newPassword && <div className="text-red-500 ml-2 text-xs">{errorsNewPassword.newPassword?.message}</div>}
+              </div>
+              <div className="mt-10">
+                <Controller
+                  name="confirmNewPassword"
+                  control={controlNewPassword}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      type="password"
+                      label="Confirm New Password"
+                      disabled={isLoadingSetNewPassword}
+                      required
+                      errorMessage={errorsNewPassword.confirmNewPassword?.message}
+                      placeholder="Enter Confirm Password"
+                      startContent={
+                        <IconLockFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+            }
+                    />
+                  )}
+                />
+                {errorsNewPassword.confirmNewPassword && <div className="text-red-500 ml-2 text-xs">{errorsNewPassword.confirmNewPassword?.message}</div>}
+              </div>
+
+              <div className=" flex justify-center items-center w-60 mx-auto">
+                <Button className="mt-5 " variant="bordered" color="primary" type="submit" isLoading={isLoadingSetNewPassword}>
+                  Reset password
+                </Button>
+              </div>
+            </form>
+            <div className="mt-5">
+              <Link href="/auth/login">
+                <div className="flex gap-2">
+                  <IconArrowLeft stroke={1.5} />
+                  <div>Back to the login page</div>
+                </div>
+              </Link>
+            </div>
+          </Card>
+        </div>
+      </Suspense>
+
+    );
+  }
+
+  return (
+    <Suspense fallback={<div />}>
       <div className="container">
         <Card shadow="md" className="p-6 md:p-10 mt-10 mx-auto max-w-[650px]" radius="md">
           <CardHeader className="flex flex-col">
             <h2 className="text-center text-2xl md:text-4xl">Reset Your Password</h2>
             <h2 className="text-gray-500 text-center mt-3 text-xs md:text-xl">
-              Please enter your new password below.
+              Please enter your email to receive a password reset link.
             </h2>
           </CardHeader>
-          <form onSubmit={formResetNewPassword(onSubmitSetNewPassword)}>
-            <div>
+          <CardBody>
+            <form onSubmit={formResetSendEmail(onSubmit)}>
               <Controller
-                name="newPassword"
-                control={controlNewPassword}
+                name="email"
+                control={controlSendEmail}
                 render={({ field }) => (
                   <Input
                     {...field}
-                    type="password"
-                    label="New Password"
-                    disabled={isLoadingSetNewPassword}
+                    type="text"
+                    label="Email"
+                    disabled={isLoading}
+                    labelPlacement="outside"
                     required
-                    errorMessage={errorsNewPassword.newPassword?.message}
-                    placeholder="Enter Your New Password"
+                    errorMessage={errorsSendEmail.email?.message}
                     startContent={
-                      <IconLockFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-            }
-                  />
-                )}
-              />
-              {errorsNewPassword.newPassword && <div className="text-red-500 ml-2 text-xs">{errorsNewPassword.newPassword?.message}</div>}
-            </div>
-            <div className="mt-10">
-              <Controller
-                name="confirmNewPassword"
-                control={controlNewPassword}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    type="password"
-                    label="Confirm New Password"
-                    disabled={isLoadingSetNewPassword}
-                    required
-                    errorMessage={errorsNewPassword.confirmNewPassword?.message}
-                    placeholder="Enter Confirm Password"
-                    startContent={
-                      <IconLockFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-            }
-                  />
-                )}
-              />
-              {errorsNewPassword.confirmNewPassword && <div className="text-red-500 ml-2 text-xs">{errorsNewPassword.confirmNewPassword?.message}</div>}
-            </div>
-
-            <div className=" flex justify-center items-center w-60 mx-auto">
-              <Button className="mt-5 " variant="bordered" color="primary" type="submit" isLoading={isLoadingSetNewPassword}>
-                Reset password
-              </Button>
-            </div>
-          </form>
-          <div className="mt-5">
-            <Link href="/auth/login">
-              <div className="flex gap-2">
-                <IconArrowLeft stroke={1.5} />
-                <div>Back to the login page</div>
-              </div>
-            </Link>
-          </div>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="container">
-      <Card shadow="md" className="p-6 md:p-10 mt-10 mx-auto max-w-[650px]" radius="md">
-        <CardHeader className="flex flex-col">
-          <h2 className="text-center text-2xl md:text-4xl">Reset Your Password</h2>
-          <h2 className="text-gray-500 text-center mt-3 text-xs md:text-xl">
-            Please enter your email to receive a password reset link.
-          </h2>
-        </CardHeader>
-        <CardBody>
-          <form onSubmit={formResetSendEmail(onSubmit)}>
-            <Controller
-              name="email"
-              control={controlSendEmail}
-              render={({ field }) => (
-                <Input
-                  {...field}
-                  type="text"
-                  label="Email"
-                  disabled={isLoading}
-                  labelPlacement="outside"
-                  required
-                  errorMessage={errorsSendEmail.email?.message}
-                  startContent={
-                    <IconMailFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                      <IconMailFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
           }
-                />
-              )}
-            />
-            {errorsSendEmail.email && <div className="text-red-500 ml-2 text-xs">{errorsSendEmail.email?.message}</div>}
-            <div className=" flex justify-center items-center w-60 mx-auto mt-5">
-              <Button className="mt-5 " variant="bordered" color="primary" type="submit" isLoading={isLoading}>
-                Send Email
-              </Button>
-            </div>
-            <div className=" flex justify-center items-center w-60 mx-auto">
-              <Link className="mt-5" href="https://mail.google.com/mail/u/0/" target="_blank">
-                Open Mail
-                {' '}
-                <IconExternalLink size={15} style={{ marginLeft: 5 }} />
+                  />
+                )}
+              />
+              {errorsSendEmail.email && <div className="text-red-500 ml-2 text-xs">{errorsSendEmail.email?.message}</div>}
+              <div className=" flex justify-center items-center w-60 mx-auto mt-5">
+                <Button className="mt-5 " variant="bordered" color="primary" type="submit" isLoading={isLoading}>
+                  Send Email
+                </Button>
+              </div>
+              <div className=" flex justify-center items-center w-60 mx-auto">
+                <Link className="mt-5" href="https://mail.google.com/mail/u/0/" target="_blank">
+                  Open Mail
+                  {' '}
+                  <IconExternalLink size={15} style={{ marginLeft: 5 }} />
+                </Link>
+              </div>
+            </form>
+            <div className="mt-5">
+              <Link href="/auth/login">
+                <div className="flex gap-2">
+                  <IconArrowLeft stroke={1.5} />
+                  <div>Back to the login page</div>
+                </div>
               </Link>
             </div>
-          </form>
-          <div className="mt-5">
-            <Link href="/auth/login">
-              <div className="flex gap-2">
-                <IconArrowLeft stroke={1.5} />
-                <div>Back to the login page</div>
-              </div>
-            </Link>
-          </div>
-        </CardBody>
-      </Card>
-    </div>
+          </CardBody>
+        </Card>
+      </div>
+    </Suspense>
+
   );
 }

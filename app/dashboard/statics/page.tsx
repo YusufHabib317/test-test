@@ -1,7 +1,11 @@
 'use client';
 
+import { Suspense } from 'react';
+
 export default function StaticsPage() {
   return (
-    <div>Statics Page</div>
+    <Suspense fallback={<div />}>
+      Statics Page
+    </Suspense>
   );
 }

@@ -3,7 +3,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 
 import { deleteUserByEmail, verifyUserByEmail } from '@/db';
 import { emailOtp } from '@/lib/auth-client';
@@ -70,53 +70,55 @@ export default function VerifyEmailPage() {
   };
 
   return (
-    <div className="container my-10">
-      <Card shadow="md" className="p-6 md:p-5 mt-5 mx-auto max-w-[500px]" radius="md">
-        <p className="text-gray-200 text-center my-10 text-2xl">
-          Enter
-          {' '}
-          <span className="text-emerald-500 font-bold underline">OTP</span>
-          {' '}
-          sent to your email:
-        </p>
-        <div className="flex justify-center items-center">
-          <div className="flex flex-col gap-5">
-            <PinInput
-              length={6}
-              type="numeric"
-              autoFocus
-              onChange={handleOtpComplete}
-              onComplete={handleOtpComplete}
-              disabled={isLoadingVerify}
-            />
-            <Button
-              onClick={handleVerifyOtp}
-              disabled={otp.length !== 6 || isLoadingVerify}
-              isLoading={isLoadingVerify}
-              variant="bordered"
-              className="w-40 mx-auto"
-            >
-              {isLoadingVerify ? 'Verifying...' : 'Verify'}
-            </Button>
-            <Button
-              onClick={handleSendOtp}
-              disabled={isLoadingResend}
-              variant="bordered"
-              className="w-40 mx-auto"
-              isLoading={isLoadingResend}
-            >
-              {isLoadingResend ? 'Resending Otp...' : ' Resend otp'}
-            </Button>
-            <div className=" flex justify-center items-center w-60 mx-auto">
-              <Link href="https://mail.google.com/mail/u/0/" target="_blank">
-                Open Mail
-                {' '}
-                <IconExternalLink size={15} style={{ marginLeft: 5 }} />
-              </Link>
+    <Suspense fallback={<div />}>
+      <div className="container my-10">
+        <Card shadow="md" className="p-6 md:p-5 mt-5 mx-auto max-w-[500px]" radius="md">
+          <p className="text-gray-200 text-center my-10 text-2xl">
+            Enter
+            {' '}
+            <span className="text-emerald-500 font-bold underline">OTP</span>
+            {' '}
+            sent to your email:
+          </p>
+          <div className="flex justify-center items-center">
+            <div className="flex flex-col gap-5">
+              <PinInput
+                length={6}
+                type="numeric"
+                autoFocus
+                onChange={handleOtpComplete}
+                onComplete={handleOtpComplete}
+                disabled={isLoadingVerify}
+              />
+              <Button
+                onClick={handleVerifyOtp}
+                disabled={otp.length !== 6 || isLoadingVerify}
+                isLoading={isLoadingVerify}
+                variant="bordered"
+                className="w-40 mx-auto"
+              >
+                {isLoadingVerify ? 'Verifying...' : 'Verify'}
+              </Button>
+              <Button
+                onClick={handleSendOtp}
+                disabled={isLoadingResend}
+                variant="bordered"
+                className="w-40 mx-auto"
+                isLoading={isLoadingResend}
+              >
+                {isLoadingResend ? 'Resending Otp...' : ' Resend otp'}
+              </Button>
+              <div className=" flex justify-center items-center w-60 mx-auto">
+                <Link href="https://mail.google.com/mail/u/0/" target="_blank">
+                  Open Mail
+                  {' '}
+                  <IconExternalLink size={15} style={{ marginLeft: 5 }} />
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
-      </Card>
-    </div>
+        </Card>
+      </div>
+    </Suspense>
   );
 }
