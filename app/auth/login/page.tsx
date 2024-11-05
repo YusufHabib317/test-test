@@ -115,13 +115,13 @@ export default function LoginPage() {
                         <IconLockFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
             }
                       endContent={(
-                        <Button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
+                        <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
                           {isVisible ? (
                             <IconEyeOff className="text-2xl text-default-400 pointer-events-none" />
                           ) : (
                             <IconEye className="text-2xl text-default-400 pointer-events-none" />
                           )}
-                        </Button>
+                        </button>
       )}
                       type={isVisible ? 'text' : 'password'}
                     />

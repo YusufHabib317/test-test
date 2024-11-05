@@ -134,13 +134,13 @@ export default function RegisterPage() {
                       errorMessage={errors.password?.message}
                       placeholder="Enter Your Password"
                       endContent={(
-                        <Button className="focus:outline-none" type="button" onClick={togglePasswordVisibility} aria-label="toggle password visibility">
+                        <button className="focus:outline-none" type="button" onClick={togglePasswordVisibility} aria-label="toggle password visibility">
                           {isPasswordVisible ? (
                             <IconEyeOff className="text-2xl text-default-400 pointer-events-none" />
                           ) : (
                             <IconEye className="text-2xl text-default-400 pointer-events-none" />
                           )}
-                        </Button>
+                        </button>
                   )}
                       startContent={
                         <IconLockFilled className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
