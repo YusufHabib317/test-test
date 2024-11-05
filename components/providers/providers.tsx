@@ -7,9 +7,9 @@ import { NextUIProvider } from '@nextui-org/system';
 import { useRouter } from 'next/navigation';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import { ThemeProviderProps } from 'next-themes/dist/types';
-import { RouterTransition } from '../common';
 import { Toaster } from 'react-hot-toast';
-import { NavigationEvents } from '../common/router-transition/navigation-events';
+// import { RouterTransition } from '../common';
+// import { NavigationEvents } from '../common/router-transition/navigation-events';
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -21,8 +21,8 @@ export function Providers({ children, themeProps }: ProvidersProps) {
 
   return (
     <NextUIProvider navigate={router.push}>
-      <RouterTransition />
-      <NavigationEvents />
+      {/* <RouterTransition />
+      <NavigationEvents /> */}
       <Toaster
         position="bottom-right"
         reverseOrder={false}
